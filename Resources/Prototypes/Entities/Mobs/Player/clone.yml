@@ -57,6 +57,9 @@
   - SouthernAccent
   - SpanishAccent
   - StutteringAccent
+  # Harmony specific
+  - Hypophonia
+  - IlleismAccent
   blacklist:
     components:
     - AttachedClothing # helmets, which are part of the suit

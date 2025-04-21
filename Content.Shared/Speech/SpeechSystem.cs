@@ -1,3 +1,5 @@
+using Content.Shared.Cloning.Events;
+
 namespace Content.Shared.Speech
 {
     public sealed class SpeechSystem : EntitySystem
@@ -7,6 +9,7 @@ namespace Content.Shared.Speech
             base.Initialize();
 
             SubscribeLocalEvent<SpeakAttemptEvent>(OnSpeakAttempt);
+            SubscribeLocalEvent<SpeechComponent, CloningEvent>(OnCloning);
         }
 
         public void SetSpeech(EntityUid uid, bool value, SpeechComponent? component = null)
@@ -28,6 +31,15 @@ namespace Content.Shared.Speech
         {
             if (!TryComp(args.Uid, out SpeechComponent? speech) || !speech.Enabled)
                 args.Cancel();
+        }
+
+        // Harmony addition, so that the RaisedByX and VoiceOfX traits copy over to clones
+        private void OnCloning(Entity<SpeechComponent> ent, ref CloningEvent args)
+        {
+            var cloneSpeechComponent = EnsureComp<SpeechComponent>(args.CloneUid);
+            cloneSpeechComponent.SpeechSounds = ent.Comp.SpeechSounds;
+            cloneSpeechComponent.SpeechVerb = ent.Comp.SpeechVerb;
+            cloneSpeechComponent.AllowedEmotes = ent.Comp.AllowedEmotes;
         }
     }
 }

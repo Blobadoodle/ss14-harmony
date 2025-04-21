@@ -2,6 +2,7 @@ using Content.Server.Actions;
 using Content.Server.Chat.Systems;
 using Content.Server.Speech.Components;
 using Content.Shared.Chat.Prototypes;
+using Content.Shared.Cloning.Events;
 using Content.Shared.Humanoid;
 using Content.Shared.Speech;
 using Content.Shared.Speech.Components;
@@ -29,6 +30,7 @@ public sealed class VocalSystem : EntitySystem
         SubscribeLocalEvent<VocalComponent, SexChangedEvent>(OnSexChanged);
         SubscribeLocalEvent<VocalComponent, EmoteEvent>(OnEmote);
         SubscribeLocalEvent<VocalComponent, ScreamActionEvent>(OnScreamAction);
+        SubscribeLocalEvent<VocalComponent, CloningEvent>(OnCloning);
     }
 
     private void OnMapInit(EntityUid uid, VocalComponent component, MapInitEvent args)
@@ -98,5 +100,13 @@ public sealed class VocalSystem : EntitySystem
         if (!component.Sounds.TryGetValue(sex.Value, out var protoId))
             return;
         _proto.TryIndex(protoId, out component.EmoteSounds);
+    }
+
+    // Harmony addition, so that the VoiceOfX traits copy over to clones
+    private void OnCloning(Entity<VocalComponent> ent, ref CloningEvent args)
+    {
+        var cloneVocalComponent = EnsureComp<VocalComponent>(args.CloneUid);
+        cloneVocalComponent.EmoteSounds = ent.Comp.EmoteSounds;
+        cloneVocalComponent.Sounds = ent.Comp.Sounds;
     }
 }
