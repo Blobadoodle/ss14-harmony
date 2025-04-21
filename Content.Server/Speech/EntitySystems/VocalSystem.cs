@@ -2,7 +2,7 @@ using Content.Server.Actions;
 using Content.Server.Chat.Systems;
 using Content.Server.Speech.Components;
 using Content.Shared.Chat.Prototypes;
-using Content.Shared.Cloning.Events;
+using Content.Shared.Cloning.Events; // Harmony addition
 using Content.Shared.Humanoid;
 using Content.Shared.Speech;
 using Content.Shared.Speech.Components;
@@ -30,7 +30,7 @@ public sealed class VocalSystem : EntitySystem
         SubscribeLocalEvent<VocalComponent, SexChangedEvent>(OnSexChanged);
         SubscribeLocalEvent<VocalComponent, EmoteEvent>(OnEmote);
         SubscribeLocalEvent<VocalComponent, ScreamActionEvent>(OnScreamAction);
-        SubscribeLocalEvent<VocalComponent, CloningEvent>(OnCloning);
+        SubscribeLocalEvent<VocalComponent, CloningEvent>(OnCloning); // Harmony addition
     }
 
     private void OnMapInit(EntityUid uid, VocalComponent component, MapInitEvent args)

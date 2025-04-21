@@ -1,4 +1,4 @@
-using Content.Shared.Cloning.Events;
+using Content.Shared.Cloning.Events; // Harmony addition
 
 namespace Content.Shared.Speech
 {
@@ -9,7 +9,7 @@ namespace Content.Shared.Speech
             base.Initialize();
 
             SubscribeLocalEvent<SpeakAttemptEvent>(OnSpeakAttempt);
-            SubscribeLocalEvent<SpeechComponent, CloningEvent>(OnCloning);
+            SubscribeLocalEvent<SpeechComponent, CloningEvent>(OnCloning); // Harmony addition
         }
 
         public void SetSpeech(EntityUid uid, bool value, SpeechComponent? component = null)
